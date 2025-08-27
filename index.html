@@ -1,13 +1,469 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For My Babie 💖</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apology Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Apology Card Styles */
+        .card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffb6c1 0%, #fff5ee 100%);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .sorry-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .sorry-text {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.2);
+            font-size: 1.5rem;
+            animation: floatAround 6s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes floatAround {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(100px, 100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .main-message {
+            font-size: 4.5rem;
+            font-weight: bold;
+            color: #ff6f61;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+            margin-bottom: 2rem;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(255, 105, 180, 1);
+            }
+        }
+
+        .nicknames {
+            font-size: 2rem;
+            color: #ff69b4;
+            margin-bottom: 2rem;
+            animation: flash 4s infinite;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            25% { content: "babie" }
+            50% { content: "cutie" }
+            75% { content: "princess" }
+        }
+
+        .continue-button {
+            padding: 20px 40px;
+            font-size: 2rem;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .continue-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Rose Screen Styles */
+        #rose-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffb6c1 0%, #fff5ee 100%);
+        }
+
+        .rose {
+            font-size: 8rem;
+            animation: roseGlow 2s infinite alternate, sway 3s infinite ease-in-out;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes roseGlow {
+            0% { 
+                transform: scale(1);
+                text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            }
+            100% { 
+                transform: scale(1.1);
+                text-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+            }
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .rose-message {
+            font-size: 2rem;
+            margin-top: 2rem;
+            color: #ff6f61;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        /* Game Screen Styles */
+        #game-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffb6c1 0%, #fff5ee 100%);
+        }
+
+        #game-container {
+            position: relative;
+            width: 90%;
+            height: 70%;
+            border: 3px solid #ff6f61;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .cat {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3.5rem;
+            z-index: 10;
+            transition: transform 0.2s ease;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: fall 4s linear forwards;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .game-message {
+            font-size: 2rem;
+            margin-top: 2rem;
+            color: #ff6f61;
+        }
+
+        .score {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            color: #ff6f61;
+        }
+
+        /* Reward Screen Styles */
+        #reward-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffb6c1 0%, #fff5ee 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kiss {
+            position: absolute;
+            font-size: 2rem;
+            animation: flyAround 3s infinite alternate;
+            opacity: 0;
+        }
+
+        @keyframes flyAround {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .reward-message {
+            font-size: 2.5rem;
+            color: #ff6f61;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.7);
+            z-index: 10;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-message {
+                font-size: 3rem;
+            }
+            
+            .continue-button {
+                font-size: 1.5rem;
+                padding: 15px 30px;
+            }
+            
+            .rose {
+                font-size: 6rem;
+            }
+            
+            .cat {
+                font-size: 2.5rem;
+            }
+            
+            .reward-message {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="script.js"></script>
+    <!-- Apology Card -->
+    <div id="apology-card" class="card">
+        <div class="sorry-background" id="sorry-background"></div>
+        <div class="main-content">
+            <h1 class="main-message">I'm So Sorry 💖</h1>
+            <div class="nicknames" id="nicknames">my love</div>
+            <button id="continue-button" class="continue-button">🐱🦇 Continue</button>
+        </div>
+    </div>
+
+    <!-- Rose Screen -->
+    <div id="rose-screen" class="hidden">
+        <div class="rose" id="rose">🌹</div>
+        <p class="rose-message">Press the rose to see the surprise 💕</p>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="hidden">
+        <div id="game-container">
+            <div class="cat" id="cat">🐱</div>
+            <div id="hearts-container"></div>
+        </div>
+        <p class="game-message">Catch 10 hearts to win! ❤️</p>
+        <div class="score" id="score">Hearts: 0/10</div>
+    </div>
+
+    <!-- Reward Screen -->
+    <div id="reward-screen" class="hidden">
+        <div id="kisses-container"></div>
+        <h1 class="reward-message">All these kisses just for u my babie 💕🐱🦇</h1>
+    </div>
+
+    <script>
+        // Create floating SORRY text background
+        const sorryBackground = document.getElementById('sorry-background');
+        for (let i = 0; i < 1000; i++) {
+            const sorry = document.createElement('div');
+            sorry.className = 'sorry-text';
+            sorry.textContent = 'SORRY';
+            sorry.style.left = Math.random() * 100 + '%';
+            sorry.style.top = Math.random() * 100 + '%';
+            sorry.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+            sorry.style.animationDelay = Math.random() * 6 + 's';
+            sorry.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            sorryBackground.appendChild(sorry);
+        }
+
+        // Rotate through nicknames
+        const nicknames = document.getElementById('nicknames');
+        const names = ['babie', 'cutie', 'princess', 'gurll', 'my love'];
+        let nameIndex = 0;
+
+        setInterval(() => {
+            nicknames.textContent = names[nameIndex];
+            nameIndex = (nameIndex + 1) % names.length;
+        }, 2000);
+
+        // Continue button click handler
+        document.getElementById('continue-button').addEventListener('click', function() {
+            const card = document.getElementById('apology-card');
+            
+            // Flash effect
+            document.body.style.backgroundColor = '#ffffff';
+            setTimeout(() => {
+                document.body.style.backgroundColor = '';
+                card.style.transform = 'scale(1.2)';
+                card.style.opacity = '0';
+                
+                setTimeout(() => {
+                    card.classList.add('hidden');
+                    document.getElementById('rose-screen').classList.remove('hidden');
+                }, 800);
+            }, 100);
+        });
+
+        // Rose click handler
+        document.getElementById('rose').addEventListener('click', function() {
+            document.getElementById('rose-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            startGame();
+        });
+
+        // Game variables
+        let heartsCaught = 0;
+        let gameStarted = false;
+
+        function startGame() {
+            if (gameStarted) return;
+            gameStarted = true;
+            
+            const gameContainer = document.getElementById('game-container');
+            const heartsContainer = document.getElementById('hearts-container');
+            const cat = document.getElementById('cat');
+            const score = document.getElementById('score');
+            
+            // Mouse movement for cat
+            gameContainer.addEventListener('mousemove', (e) => {
+                const rect = gameContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                cat.style.left = Math.max(30, Math.min(x - 25, rect.width - 30)) + 'px';
+            });
+
+            // Touch movement for mobile
+            gameContainer.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const rect = gameContainer.getBoundingClientRect();
+                const x = e.touches[0].clientX - rect.left;
+                cat.style.left = Math.max(30, Math.min(x - 25, rect.width - 30)) + 'px';
+            });
+
+            // Create hearts
+            const heartInterval = setInterval(() => {
+                if (heartsCaught >= 10) {
+                    clearInterval(heartInterval);
+                    showRewardScreen();
+                    return;
+                }
+
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 90 + 5 + '%';
+                
+                heartsContainer.appendChild(heart);
+
+                // Check collision
+                const checkCollision = () => {
+                    const catRect = cat.getBoundingClientRect();
+                    const heartRect = heart.getBoundingClientRect();
+                    
+                    if (heartRect.top + heartRect.height >= catRect.top &&
+                        heartRect.left >= catRect.left &&
+                        heartRect.right <= catRect.right + catRect.width) {
+                        heartsCaught++;
+                        score.textContent = `Hearts: ${heartsCaught}/10`;
+                        heart.remove();
+                        
+                        if (heartsCaught >= 10) {
+                            clearInterval(heartInterval);
+                            showRewardScreen();
+                        }
+                    }
+                };
+
+                // Check collision every 100ms
+                const collisionInterval = setInterval(checkCollision, 100);
+                
+                // Remove heart when animation ends or after timeout
+                setTimeout(() => {
+                    clearInterval(collisionInterval);
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                }, 4000);
+            }, 800);
+        }
+
+        function showRewardScreen() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('reward-screen').classList.remove('hidden');
+            
+            // Create flying kisses
+            const kissesContainer = document.getElementById('kisses-container');
+            for (let i = 0; i < 100; i++) {
+                const kiss = document.createElement('div');
+                kiss.className = 'kiss';
+                kiss.innerHTML = '💋';
+                kiss.style.setProperty('--tx', (Math.random() * 200 - 100) + 'vw');
+                kiss.style.setProperty('--ty', (Math.random() * 200 - 100) + 'vh');
+                kiss.style.left = Math.random() * 100 + '%';
+                kiss.style.top = Math.random() * 100 + '%';
+                kiss.style.animationDelay = Math.random() * 3 + 's';
+                kissesContainer.appendChild(kiss);
+            }
+        }
+    </script>
 </body>
 </html>
+
