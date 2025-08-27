@@ -217,6 +217,99 @@
             color: #ff6f61;
         }
 
+        /* Letter Screen Styles */
+        #letter-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffb6c1 0%, #fff5ee 100%);
+            position: relative;
+        }
+
+        .letter-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .letter {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .letter.open {
+            transform: rotateY(180deg);
+        }
+
+        .letter-front, .letter-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .letter-front {
+            background: linear-gradient(135deg, #ff8fa3, #ffb6c1);
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+        }
+
+        .letter-back {
+            background: white;
+            transform: rotateY(180deg);
+            padding: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+        }
+
+        .letter-seal {
+            font-size: 3rem;
+            color: #ff6f61;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .letter-content {
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .sorry-message {
+            font-size: 1.2rem;
+            color: #ff6f61;
+            margin: 5px 0;
+            animation: fadeIn 0.5s ease-in-out;
+            padding: 5px;
+            background: rgba(255, 182, 193, 0.1);
+            border-radius: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .letter-instruction {
+            font-size: 1.5rem;
+            color: #ff6f61;
+            margin-top: 2rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
         /* Reward Screen Styles */
         #reward-screen {
             display: flex;
@@ -284,6 +377,15 @@
             .reward-message {
                 font-size: 1.8rem;
             }
+            
+            .letter-container {
+                width: 250px;
+                height: 350px;
+            }
+            
+            .sorry-message {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -312,6 +414,21 @@
         </div>
         <p class="game-message">Catch 10 hearts to win! ❤️</p>
         <div class="score" id="score">Hearts: 0/10</div>
+    </div>
+
+    <!-- Letter Screen -->
+    <div id="letter-screen" class="hidden">
+        <div class="letter-container" id="letter-container">
+            <div class="letter" id="letter">
+                <div class="letter-front">
+                    <div class="letter-seal">💌</div>
+                </div>
+                <div class="letter-back">
+                    <div class="letter-content" id="letter-content"></div>
+                </div>
+            </div>
+        </div>
+        <p class="letter-instruction">Click the letter to open it 💕</p>
     </div>
 
     <!-- Reward Screen -->
@@ -402,7 +519,7 @@
             const heartInterval = setInterval(() => {
                 if (heartsCaught >= 10) {
                     clearInterval(heartInterval);
-                    showRewardScreen();
+                    showLetterScreen();
                     return;
                 }
 
@@ -427,7 +544,7 @@
                         
                         if (heartsCaught >= 10) {
                             clearInterval(heartInterval);
-                            showRewardScreen();
+                            showLetterScreen();
                         }
                     }
                 };
@@ -445,8 +562,60 @@
             }, 800);
         }
 
-        function showRewardScreen() {
+        function showLetterScreen() {
             document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('letter-screen').classList.remove('hidden');
+            
+            // Add letter click handler
+            const letter = document.getElementById('letter');
+            const letterContent = document.getElementById('letter-content');
+            
+            letter.addEventListener('click', function() {
+                letter.classList.add('open');
+                
+                // Add many "sorry" messages
+                const sorryMessages = [
+                    "I'm so sorry 💕", "Forgive me please 🥺", "I messed up 😔", 
+                    "My bad 😣", "Can we try again? 🌸", "I love you so much 💖",
+                    "You mean everything to me ✨", "I'll do better 🐱", "Please don't be mad 🦇",
+                    "You're my world 🌎", "I cherish you 💫", "My heart is yours 💌",
+                    "I'm learning from this 📚", "Your happiness matters most 🌈",
+                    "Let me make it up to you 🎁", "You deserve the best 👑", 
+                    "I appreciate you 🌟", "Thank you for your patience ⏳",
+                    "I value our connection 🔗", "You're amazing 🤩"
+                ];
+                
+                // Add sorry messages with delay
+                sorryMessages.forEach((message, index) => {
+                    setTimeout(() => {
+                        const sorryDiv = document.createElement('div');
+                        sorryDiv.className = 'sorry-message';
+                        sorryDiv.textContent = message;
+                        letterContent.appendChild(sorryDiv);
+                        
+                        // Scroll to bottom
+                        letterContent.scrollTop = letterContent.scrollHeight;
+                        
+                        // If last message, show continue button after delay
+                        if (index === sorryMessages.length - 1) {
+                            setTimeout(() => {
+                                const continueBtn = document.createElement('button');
+                                continueBtn.className = 'continue-button';
+                                continueBtn.textContent = 'Continue to Kisses 💋';
+                                continueBtn.style.marginTop = '20px';
+                                continueBtn.onclick = function() {
+                                    document.getElementById('letter-screen').classList.add('hidden');
+                                    showRewardScreen();
+                                };
+                                letterContent.appendChild(continueBtn);
+                            }, 1000);
+                        }
+                    }, index * 300);
+                });
+            }, { once: true }); // Only run once
+        }
+
+        function showRewardScreen() {
             document.getElementById('reward-screen').classList.remove('hidden');
             
             // Create flying kisses
